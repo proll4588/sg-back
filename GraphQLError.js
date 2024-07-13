@@ -27,7 +27,7 @@ export const throwNewGQLError = (code) => {
       });
 
     case 'USER_NOT_FOUND':
-      throw new GraphQLError('User is not found', {
+      throw new GraphQLError('Такого пользователя не существует', {
         extensions: {
           code: 'USER_NOT_FOUND',
           http: { status: 404 },
@@ -35,7 +35,7 @@ export const throwNewGQLError = (code) => {
       });
 
     case 'PASSWORD_IS_NOT_CORRECT':
-      throw new GraphQLError('Password is not correct', {
+      throw new GraphQLError('Не верный пароль', {
         extensions: {
           code: 'PASSWORD_IS_NOT_CORRECT',
           http: { status: 400 },
