@@ -11,7 +11,7 @@ import {
   getUserById,
   getUsersByRole,
   getUsersRoles,
-} from './models/User/user.js';
+} from './models/user.js';
 
 const qRegistrate = async (login, password, roleId) =>
   await registrate(login, password, roleId);
