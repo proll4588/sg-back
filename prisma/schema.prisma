@@ -8,11 +8,12 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  login    String @unique(map: "User_pk_2") @db.VarChar(50)
-  password String @db.VarChar(255)
-  roleId   Int
-  Role     Role   @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_Role_id_fk")
+  id               Int                @id @default(autoincrement())
+  login            String             @unique(map: "User_pk_2") @db.VarChar(50)
+  password         String             @db.VarChar(255)
+  roleId           Int
+  TestOneProcesses TestOneProcesses[]
+  Role             Role               @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_Role_id_fk")
 
   @@index([roleId], map: "User_Role_id_fk")
 }
@@ -21,4 +22,35 @@ model Role {
   id    Int    @id @default(autoincrement())
   title String @unique(map: "Role_pk_2") @db.VarChar(50)
   User  User[]
+}
+
+model TestOneAnswer {
+  id               Int              @id @default(autoincrement())
+  questionId       Int
+  answer           Int
+  processId        Int
+  TestOneProcesses TestOneProcesses @relation(fields: [processId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneAnswer_TestOneProcesses_id_fk")
+  TestOneQuestions TestOneQuestions @relation(fields: [questionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneAnswer_TestOneQuestions_id_fk")
+
+  @@index([questionId], map: "TestOneAnswer_TestOneQuestions_id_fk")
+  @@index([processId], map: "TestOneAnswer_TestOneProcesses_id_fk")
+}
+
+model TestOneProcesses {
+  id            Int             @id @default(autoincrement())
+  userId        Int
+  startDate     DateTime        @db.DateTime(0)
+  endDate       DateTime?       @db.DateTime(0)
+  complete      Boolean         @default(false)
+  TestOneAnswer TestOneAnswer[]
+  User          User            @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneProcesses_User_id_fk")
+
+  @@index([userId], map: "TestOneProcesses_User_id_fk")
+}
+
+model TestOneQuestions {
+  id            Int             @id @default(autoincrement())
+  text          String          @db.VarChar(255)
+  position      Int             @unique(map: "TestOneQuestions_pk_2")
+  TestOneAnswer TestOneAnswer[]
 }

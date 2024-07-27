@@ -12,6 +12,14 @@ import {
   getUsersByRole,
   getUsersRoles,
 } from './models/user.js';
+import {
+  addAns,
+  completeTestOneProcess,
+  createTestOneProcess,
+  getAllTestOne,
+  getTestOneByUserId,
+  getTestOneQuestions,
+} from './models/testOne.js';
 
 const qRegistrate = async (login, password, roleId) =>
   await registrate(login, password, roleId);
@@ -35,6 +43,30 @@ const qDeleteUser = async (context, userId) => {
   return true;
 };
 
+const qGetTestOneProcess = async () => {
+  return await getAllTestOne();
+};
+
+const qGetTestOneQuestions = async () => {
+  return await getTestOneQuestions();
+};
+
+const qStartTestOne = async (userId) => {
+  return await createTestOneProcess(userId);
+};
+
+const qGetTestOne = async (userId) => {
+  return await getTestOneByUserId(userId);
+};
+
+const qAnsTestOne = async (processId, questionId, ans) => {
+  return await addAns(processId, questionId, ans);
+};
+
+const qCompleteTestOne = async (processId) => {
+  return await completeTestOneProcess(processId);
+};
+
 const resolvers = {
   Upload: GraphQLUpload,
   Query: {
@@ -44,12 +76,24 @@ const resolvers = {
     getUsers: async (_, { roleId }, context) =>
       await qGetUsers(context, roleId),
     getUser: async (_, __, context) => await qGetUser(context),
+
+    // TODO: Разобраться с доступами
+    getTestOneProcess: async () => await qGetTestOneProcess(),
+    getTestOneQuestions: async () => await qGetTestOneQuestions(),
   },
   Mutation: {
     registration: async (_, { login, password, roleId }) =>
       await qRegistrate(login, password, roleId),
     deleteUser: async (_, { userId }, context) =>
       await qDeleteUser(context, userId),
+
+    // Test one
+    startTestOne: async (_, { userId }) => await qStartTestOne(userId),
+    getTestOne: async (_, { userId }) => await qGetTestOne(userId),
+    ansTestOne: async (_, { processId, questionId, ans }) =>
+      await qAnsTestOne(processId, questionId, ans),
+    completeTestOne: async (_, { processId }) =>
+      await qCompleteTestOne(processId),
   },
 };
 
