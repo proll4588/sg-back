@@ -56,6 +56,7 @@ const typeDefs = gql`
 
     getTestOneProcess: [TestOneProcess]
     getTestOneQuestions: [TestOneQuestions!]
+    getTestOne(userId: Int!): TestOneProcess
   }
 
   type Mutation {
@@ -66,7 +67,6 @@ const typeDefs = gql`
 
     # Test one
     startTestOne(userId: Int!): TestOneProcess
-    getTestOne(userId: Int!): TestOneProcess
     ansTestOne(processId: Int!, questionId: Int!, ans: Int!): TestOneProcess
     completeTestOne(processId: Int!): TestOneProcess
     # ====

@@ -80,6 +80,7 @@ const resolvers = {
     // TODO: Разобраться с доступами
     getTestOneProcess: async () => await qGetTestOneProcess(),
     getTestOneQuestions: async () => await qGetTestOneQuestions(),
+    getTestOne: async (_, { userId }) => await qGetTestOne(userId),
   },
   Mutation: {
     registration: async (_, { login, password, roleId }) =>
@@ -89,7 +90,6 @@ const resolvers = {
 
     // Test one
     startTestOne: async (_, { userId }) => await qStartTestOne(userId),
-    getTestOne: async (_, { userId }) => await qGetTestOne(userId),
     ansTestOne: async (_, { processId, questionId, ans }) =>
       await qAnsTestOne(processId, questionId, ans),
     completeTestOne: async (_, { processId }) =>
