@@ -13,6 +13,7 @@ model User {
   password         String             @db.VarChar(255)
   roleId           Int
   TestOneProcesses TestOneProcesses[]
+  TestTwoProcesses TestTwoProcesses[]
   Role             Role               @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_Role_id_fk")
 
   @@index([roleId], map: "User_Role_id_fk")
@@ -53,4 +54,35 @@ model TestOneQuestions {
   text          String          @db.VarChar(255)
   position      Int             @unique(map: "TestOneQuestions_pk_2")
   TestOneAnswer TestOneAnswer[]
+}
+
+model TestTwoAnswer {
+  id               Int              @id @default(autoincrement())
+  questionId       Int
+  answer           Boolean
+  processId        Int
+  TestTwoProcesses TestTwoProcesses @relation(fields: [processId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestTwoAnswer_TestTwoProcesses_id_fk")
+  TestTwoQuestions TestTwoQuestions @relation(fields: [questionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestTwoAnswer_TestTwoQuestions_id_fk")
+
+  @@index([processId], map: "TestTwoAnswer_TestTwoProcesses_id_fk")
+  @@index([questionId], map: "TestTwoAnswer_TestTwoQuestions_id_fk")
+}
+
+model TestTwoProcesses {
+  id            Int             @id @default(autoincrement())
+  userId        Int
+  startDate     DateTime        @db.DateTime(0)
+  endDate       DateTime?       @db.DateTime(0)
+  complete      Boolean         @default(false)
+  TestTwoAnswer TestTwoAnswer[]
+  User          User            @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestTwoProcesses_User_id_fk")
+
+  @@index([userId], map: "TestTwoProcesses_User_id_fk")
+}
+
+model TestTwoQuestions {
+  id            Int             @id @default(autoincrement())
+  text          String          @db.VarChar(1000)
+  position      Int             @unique(map: "TestTwoQuestions_pk_2")
+  TestTwoAnswer TestTwoAnswer[]
 }

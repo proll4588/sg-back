@@ -20,6 +20,14 @@ import {
   getTestOneByUserId,
   getTestOneQuestions,
 } from './models/testOne.js';
+import {
+  answerTestTwo,
+  completeTestTwo,
+  getTestTwoAllProcesses,
+  getTestTwoByUserId,
+  getTestTwoQuestions,
+  startTestTwo,
+} from './models/testTwo.js';
 
 const qRegistrate = async (login, password, roleId) =>
   await registrate(login, password, roleId);
@@ -67,6 +75,30 @@ const qCompleteTestOne = async (processId) => {
   return await completeTestOneProcess(processId);
 };
 
+const qGetTestTwoProcess = async () => {
+  return await getTestTwoAllProcesses();
+};
+
+const qGetTestTwoQuestions = async () => {
+  return await getTestTwoQuestions();
+};
+
+const qGetTestTwo = async (userId) => {
+  return await getTestTwoByUserId(userId);
+};
+
+const qStartTestTwo = async (userId) => {
+  return await startTestTwo(userId);
+};
+
+const qAnsTestTwo = async (processId, questionId, ans) => {
+  return await answerTestTwo(processId, questionId, ans);
+};
+
+const qCompleteTestTwo = async (processId) => {
+  return await completeTestTwo(processId);
+};
+
 const resolvers = {
   Upload: GraphQLUpload,
   Query: {
@@ -77,10 +109,18 @@ const resolvers = {
       await qGetUsers(context, roleId),
     getUser: async (_, __, context) => await qGetUser(context),
 
+    /* TEST ONE */
     // TODO: Разобраться с доступами
     getTestOneProcess: async () => await qGetTestOneProcess(),
     getTestOneQuestions: async () => await qGetTestOneQuestions(),
     getTestOne: async (_, { userId }) => await qGetTestOne(userId),
+    /* ======== */
+
+    /* TEST TWO */
+    getTestTwoProcess: async () => await qGetTestTwoProcess(),
+    getTestTwoQuestions: async () => await qGetTestTwoQuestions(),
+    getTestTwo: async (_, { userId }) => await qGetTestTwo(userId),
+    /* ======== */
   },
   Mutation: {
     registration: async (_, { login, password, roleId }) =>
@@ -88,12 +128,21 @@ const resolvers = {
     deleteUser: async (_, { userId }, context) =>
       await qDeleteUser(context, userId),
 
-    // Test one
+    /* TEST ONE */
     startTestOne: async (_, { userId }) => await qStartTestOne(userId),
     ansTestOne: async (_, { processId, questionId, ans }) =>
       await qAnsTestOne(processId, questionId, ans),
     completeTestOne: async (_, { processId }) =>
       await qCompleteTestOne(processId),
+    /* ======== */
+
+    /* TEST TWO */
+    startTestTwo: async (_, { userId }) => await qStartTestTwo(userId),
+    ansTestTwo: async (_, { processId, questionId, ans }) =>
+      await qAnsTestTwo(processId, questionId, ans),
+    completeTestTwo: async (_, { processId }) =>
+      await qCompleteTestTwo(processId),
+    /* ======== */
   },
 };
 
