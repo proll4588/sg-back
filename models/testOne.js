@@ -166,3 +166,62 @@ export const getAllTestOne = async () => {
 
   return ans;
 };
+
+export const getTestOneResults = async () => {
+  return await prisma.testOneResult.findMany({
+    select: {
+      id: true,
+      TestOneProcesses: {
+        select: {
+          id: true,
+          complete: true,
+          startDate: true,
+          endDate: true,
+          TestOneAnswer: {
+            select: {
+              id: true,
+              answer: true,
+              TestOneQuestions: {
+                select: {
+                  id: true,
+                  position: true,
+                  text: true,
+                },
+              },
+            },
+          },
+          User: {
+            select: {
+              id: true,
+              login: true,
+              Role: {
+                select: {
+                  id: true,
+                  title: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      TestOneResultItem: {
+        select: {
+          id: true,
+          result: true,
+          TestOneScale: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
+          TestOneLevel: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};

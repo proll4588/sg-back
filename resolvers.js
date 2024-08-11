@@ -19,6 +19,7 @@ import {
   getAllTestOne,
   getTestOneByUserId,
   getTestOneQuestions,
+  getTestOneResults,
 } from './models/testOne.js';
 import {
   answerTestTwo,
@@ -99,6 +100,10 @@ const qCompleteTestTwo = async (processId) => {
   return await completeTestTwo(processId);
 };
 
+const qGetTestOneResults = async () => {
+  return await getTestOneResults();
+};
+
 const resolvers = {
   Upload: GraphQLUpload,
   Query: {
@@ -114,6 +119,8 @@ const resolvers = {
     getTestOneProcess: async () => await qGetTestOneProcess(),
     getTestOneQuestions: async () => await qGetTestOneQuestions(),
     getTestOne: async (_, { userId }) => await qGetTestOne(userId),
+
+    getTestOneResults: async () => await qGetTestOneResults(),
     /* ======== */
 
     /* TEST TWO */

@@ -66,6 +66,29 @@ const typeDefs = gql`
     User: User!
   }
 
+  type TestOneResultItem {
+    id: Int!
+    result: Int!
+    TestOneScale: TestOneScale!
+    TestOneLevel: TestOneLevel!
+  }
+
+  type TestOneScale {
+    id: Int!
+    title: String!
+  }
+
+  type TestOneLevel {
+    id: Int!
+    title: String!
+  }
+
+  type TestOneResult {
+    id: Int!
+    TestOneProcesses: TestOneProcess!
+    TestOneResultItem: [TestOneResultItem!]!
+  }
+
   type Query {
     # Auth #
     login(login: String!, password: String!): LoginResponse
@@ -79,6 +102,8 @@ const typeDefs = gql`
     getTestOneProcess: [TestOneProcess]
     getTestOneQuestions: [TestOneQuestions!]
     getTestOne(userId: Int!): TestOneProcess
+
+    getTestOneResults: [TestOneResult!]!
     # ======== #
 
     # Test two #
