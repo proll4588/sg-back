@@ -45,6 +45,7 @@ model TestOneProcesses {
   complete      Boolean         @default(false)
   TestOneAnswer TestOneAnswer[]
   User          User            @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneProcesses_User_id_fk")
+  TestOneResult TestOneResult[]
 
   @@index([userId], map: "TestOneProcesses_User_id_fk")
 }
@@ -85,4 +86,40 @@ model TestTwoQuestions {
   text          String          @db.VarChar(1000)
   position      Int             @unique(map: "TestTwoQuestions_pk_2")
   TestTwoAnswer TestTwoAnswer[]
+}
+
+model TestOneResult {
+  id                Int                 @id @default(autoincrement())
+  testOneProcessId  Int
+  TestOneProcesses  TestOneProcesses    @relation(fields: [testOneProcessId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneResult_TestOneProcesses_id_fk")
+  TestOneResultItem TestOneResultItem[]
+
+  @@index([testOneProcessId], map: "TestOneResult_TestOneProcesses_id_fk")
+}
+
+model TestOneResultItem {
+  id              Int           @id @default(autoincrement())
+  testOneResultId Int
+  scaleId         Int
+  result          Int           @default(0)
+  testOneLevelId  Int           @default(1)
+  TestOneLevel    TestOneLevel  @relation(fields: [testOneLevelId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneResultItem_TestOneLevel_id_fk")
+  TestOneResult   TestOneResult @relation(fields: [testOneResultId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneResultItem_TestOneResult_id_fk")
+  TestOneScale    TestOneScale  @relation(fields: [scaleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestOneResultItem_TestOneScale_id_fk")
+
+  @@index([testOneResultId], map: "TestOneResultItem_TestOneResult_id_fk")
+  @@index([scaleId], map: "TestOneResultItem_TestOneScale_id_fk")
+  @@index([testOneLevelId], map: "TestOneResultItem_TestOneLevel_id_fk")
+}
+
+model TestOneScale {
+  id                Int                 @id @default(autoincrement())
+  title             String              @unique(map: "TestOneScale_pk_2") @db.VarChar(100)
+  TestOneResultItem TestOneResultItem[]
+}
+
+model TestOneLevel {
+  id                Int                 @id @default(autoincrement())
+  title             String              @db.VarChar(50)
+  TestOneResultItem TestOneResultItem[]
 }
