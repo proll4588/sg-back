@@ -2,9 +2,14 @@ import { prisma } from '../controllers/prisma.controller.js';
 import { TEST_ONE_ANS_MAP } from './constants.js';
 
 // Заполнение всех данных
-const start = async () => {
-  const tests = await getAllCompletedTestOneProcesses();
-  tests.map(createResultByProcess);
+// const start = async () => {
+//   const tests = await getAllCompletedTestOneProcesses();
+//   tests.map(createResultByProcess);
+// };
+
+export const calcTestOneResult = async (processTestOneId) => {
+  const test = await getTestOneProcessById(processTestOneId);
+  createResultByProcess(test);
 };
 
 const createResultByProcess = async (test) => {
@@ -57,9 +62,9 @@ const calculateTestByScales = (test) => {
   return res;
 };
 
-const getAllCompletedTestOneProcesses = async () => {
-  const data = await prisma.testOneProcesses.findMany({
-    where: { complete: true },
+const getTestOneProcessById = async (processTestOneId) => {
+  return await prisma.testOneProcesses.findUnique({
+    where: { id: processTestOneId },
     select: {
       id: true,
       User: { select: { id: true, login: true } },
@@ -72,9 +77,26 @@ const getAllCompletedTestOneProcesses = async () => {
       },
     },
   });
-
-  return data.filter((el) => el.TestOneAnswer.length !== 0);
 };
+
+// Это для всех незаконченных)
+// const getAllCompletedTestOneProcesses = async () => {
+//   const data = await prisma.testOneProcesses.findMany({
+//     where: { complete: true },
+//     select: {
+//       id: true,
+//       User: { select: { id: true, login: true } },
+//       TestOneAnswer: {
+//         select: {
+//           id: true,
+//           answer: true,
+//           TestOneQuestions: { select: { position: true } },
+//         },
+//       },
+//     },
+//   });
+//   return data.filter((el) => el.TestOneAnswer.length !== 0);
+// };
 
 const transparentAns = (ans) => {
   switch (ans) {
@@ -118,4 +140,4 @@ const getHeightOfAns = (min, max, res) => {
 //   });
 // };
 
-start();
+// start();

@@ -1,3 +1,4 @@
+import { calcTestOneResult } from '../calcTestOne/calcTestOne.js';
 import { prisma } from '../controllers/prisma.controller.js';
 
 export const getTestOneQuestions = async () => {
@@ -124,6 +125,9 @@ export const completeTestOneProcess = async (processId) => {
       endDate: new Date(),
     },
   });
+
+  // Без await? чтоб не задерживать пользователя)
+  await calcTestOneResult(processId);
 
   return getTestOneByProcessId(processId);
 };
