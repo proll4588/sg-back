@@ -12,6 +12,7 @@ model User {
   login            String             @unique(map: "User_pk_2") @db.VarChar(50)
   password         String             @db.VarChar(255)
   roleId           Int
+  Student          Student?
   TestOneProcesses TestOneProcesses[]
   TestTwoProcesses TestTwoProcesses[]
   Role             Role               @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_Role_id_fk")
@@ -77,6 +78,7 @@ model TestTwoProcesses {
   complete      Boolean         @default(false)
   TestTwoAnswer TestTwoAnswer[]
   User          User            @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestTwoProcesses_User_id_fk")
+  TestTwoResult TestTwoResult[]
 
   @@index([userId], map: "TestTwoProcesses_User_id_fk")
 }
@@ -122,4 +124,33 @@ model TestOneLevel {
   id                Int                 @id @default(autoincrement())
   title             String              @db.VarChar(50)
   TestOneResultItem TestOneResultItem[]
+}
+
+model Group {
+  id      Int       @id @default(autoincrement())
+  title   String    @unique(map: "Group_pk_2") @db.VarChar(50)
+  Student Student[]
+}
+
+model Student {
+  passbookNumber Int    @id
+  name           String @db.VarChar(100)
+  userId         Int    @unique(map: "Student_pk_2")
+  groupId        Int
+  Group          Group  @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Student_Group_id_fk")
+  User           User   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Student_User_id_fk")
+
+  @@index([groupId], map: "Student_Group_id_fk")
+}
+
+model TestTwoResult {
+  id               Int              @id @default(autoincrement())
+  kom              Decimal          @db.Decimal(2, 2)
+  org              Decimal          @db.Decimal(2, 2)
+  komResult        Int
+  orgResult        Int
+  processId        Int
+  TestTwoProcesses TestTwoProcesses @relation(fields: [processId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestTwoResult_TestTwoProcesses_id_fk")
+
+  @@index([processId], map: "TestTwoResult_TestTwoProcesses_id_fk")
 }

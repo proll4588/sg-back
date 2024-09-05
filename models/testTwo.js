@@ -1,3 +1,4 @@
+import { calc } from '../calcTestTwo/calcTestTwo.js';
 import { prisma } from '../controllers/prisma.controller.js';
 
 const TEST_TWO_PROCESS_SELECT = {
@@ -89,6 +90,8 @@ export const completeTestTwo = async (processId) => {
     data: { complete: true, endDate: new Date() },
     select: TEST_TWO_PROCESS_SELECT,
   });
+
+  await calc(processId);
 
   return await getTestTwoProcessById(data.id);
 };
