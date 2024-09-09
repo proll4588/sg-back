@@ -1,0 +1,43 @@
+type TestOneLevel {
+  id: Int!
+  title: String!
+}
+
+type TestOneScale {
+  id: Int!
+  title: String!
+}
+
+type TestOneResultItem {
+  id: Int!
+  result: Int!
+  TestOneScale: TestOneScale!
+  TestOneLevel: TestOneLevel!
+}
+
+type TestOneQuestions {
+  id: Int!
+  text: String!
+  position: Int!
+}
+
+type TestOneAnswer {
+  id: Int!
+  answer: Int
+  TestOneQuestions: TestOneQuestions!
+}
+
+type TestOneProcess {
+  id: Int!
+  complete: Boolean!
+  startDate: String!
+  endDate: String
+  TestOneAnswer: [TestOneAnswer!]!
+  User: User!
+}
+
+type TestOneResult {
+  id: Int!
+  TestOneProcesses: TestOneProcess!
+  TestOneResultItem: [TestOneResultItem!]!
+}

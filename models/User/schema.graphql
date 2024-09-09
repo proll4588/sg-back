@@ -1,0 +1,22 @@
+type Group {
+  id: Int!
+  title: String!
+}
+
+type Student {
+  passbookNumber: Int!
+  name: String!
+  group: Group!
+}
+
+type Role {
+  id: Int!
+  title: String!
+}
+
+type User {
+  id: Int!
+  login: String!
+  Role: Role!
+  Student: Student
+}

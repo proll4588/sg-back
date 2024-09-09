@@ -11,7 +11,7 @@ import {
   getUserById,
   getUsersByRole,
   getUsersRoles,
-} from './models/user.js';
+} from './models/User/user.js';
 import {
   addAns,
   completeTestOneProcess,
@@ -20,15 +20,16 @@ import {
   getTestOneByUserId,
   getTestOneQuestions,
   getTestOneResults,
-} from './models/testOne.js';
+} from './models/TestOne/testOne.js';
 import {
   answerTestTwo,
   completeTestTwo,
   getTestTwoAllProcesses,
   getTestTwoByUserId,
   getTestTwoQuestions,
+  getTestTwoResults,
   startTestTwo,
-} from './models/testTwo.js';
+} from './models/TestTwo/testTwo.js';
 
 const qRegistrate = async (login, password, roleId) =>
   await registrate(login, password, roleId);
@@ -104,6 +105,10 @@ const qGetTestOneResults = async () => {
   return await getTestOneResults();
 };
 
+const qGetTestTwoResults = async () => {
+  return await getTestTwoResults();
+};
+
 const resolvers = {
   Upload: GraphQLUpload,
   Query: {
@@ -127,6 +132,7 @@ const resolvers = {
     getTestTwoProcess: async () => await qGetTestTwoProcess(),
     getTestTwoQuestions: async () => await qGetTestTwoQuestions(),
     getTestTwo: async (_, { userId }) => await qGetTestTwo(userId),
+    getTestTwoResults: async () => await qGetTestTwoResults(),
     /* ======== */
   },
   Mutation: {

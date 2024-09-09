@@ -12,10 +12,11 @@ model User {
   login            String             @unique(map: "User_pk_2") @db.VarChar(50)
   password         String             @db.VarChar(255)
   roleId           Int
-  Student          Student?
+  passbookNumber   Int?               @unique(map: "User_pk")
   TestOneProcesses TestOneProcesses[]
   TestTwoProcesses TestTwoProcesses[]
   Role             Role               @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_Role_id_fk")
+  Student          Student?           @relation(fields: [passbookNumber], references: [passbookNumber], onDelete: NoAction, onUpdate: NoAction, map: "User_Student_passbookNumber_fk")
 
   @@index([roleId], map: "User_Role_id_fk")
 }
@@ -135,10 +136,9 @@ model Group {
 model Student {
   passbookNumber Int    @id
   name           String @db.VarChar(100)
-  userId         Int    @unique(map: "Student_pk_2")
   groupId        Int
   Group          Group  @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Student_Group_id_fk")
-  User           User   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Student_User_id_fk")
+  User           User?
 
   @@index([groupId], map: "Student_Group_id_fk")
 }

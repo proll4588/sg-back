@@ -6,12 +6,31 @@ import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
 import resolvers from './resolvers.js';
-import typeDefs from './schema.js';
 import { TimestampTypeDefinition } from 'graphql-scalars';
 import { context } from './auth.js';
+import { readFileSync } from 'fs';
+
+const typeDefs = readFileSync('./schema.graphql', {
+  encoding: 'utf-8',
+});
+const testOneDefs = readFileSync('./models/TestOne/schema.graphql', {
+  encoding: 'utf-8',
+});
+const testTwoDefs = readFileSync('./models/TestTwo/schema.graphql', {
+  encoding: 'utf-8',
+});
+const userDefs = readFileSync('./models/User/schema.graphql', {
+  encoding: 'utf-8',
+});
 
 const server = new ApolloServer({
-  typeDefs: [TimestampTypeDefinition, typeDefs],
+  typeDefs: [
+    TimestampTypeDefinition,
+    typeDefs,
+    userDefs,
+    testOneDefs,
+    testTwoDefs,
+  ],
   resolvers: { ...resolvers },
   csrfPrevention: true,
   cache: 'bounded',

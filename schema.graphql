@@ -1,0 +1,56 @@
+scalar Timestamp
+scalar date
+scalar Upload
+
+type Token {
+  token: String!
+}
+
+type LoginResponse {
+  token: String!
+}
+
+type Query {
+  # Auth #
+  login(login: String!, password: String!): LoginResponse
+  # ==== #
+
+  getUsersRoles: [Role]
+  getUsers(roleId: Int): [User]
+  getUser: User
+
+  # Test one #
+  getTestOneProcess: [TestOneProcess]
+  getTestOneQuestions: [TestOneQuestions!]
+  getTestOne(userId: Int!): TestOneProcess
+
+  getTestOneResults: [TestOneResult!]!
+  # ======== #
+
+  # Test two #
+  getTestTwoProcess: [TestTwoProcess]
+  getTestTwoQuestions: [TestTwoQuestions!]
+  getTestTwo(userId: Int!): TestTwoProcess
+
+  getTestTwoResults: [TestTwoResult!]!
+  # ======== #
+}
+
+type Mutation {
+  # Auth #
+  registration(login: String!, password: String!, roleId: Int!): Token
+  deleteUser(userId: Int!): Boolean
+  # ==== #
+
+  # Test one #
+  startTestOne(userId: Int!): TestOneProcess
+  ansTestOne(processId: Int!, questionId: Int!, ans: Int!): TestOneProcess
+  completeTestOne(processId: Int!): TestOneProcess
+  # ======== #
+
+  # Test two #
+  startTestTwo(userId: Int!): TestTwoProcess
+  ansTestTwo(processId: Int!, questionId: Int!, ans: Boolean!): TestTwoProcess
+  completeTestTwo(processId: Int!): TestTwoProcess
+  # ======== #
+}

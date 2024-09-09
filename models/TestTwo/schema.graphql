@@ -1,0 +1,29 @@
+type TestTwoQuestions {
+  id: Int!
+  text: String!
+  position: Int!
+}
+
+type TestTwoAnswer {
+  id: Int!
+  answer: Boolean
+  TestTwoQuestions: TestTwoQuestions!
+}
+
+type TestTwoProcess {
+  id: Int!
+  complete: Boolean!
+  startDate: String!
+  endDate: String
+  TestTwoAnswer: [TestTwoAnswer!]!
+  User: User!
+}
+
+type TestTwoResult {
+  id: Int!
+  kom: Float!
+  komResult: Float!
+  org: Float!
+  orgResult: Float!
+  TestTwoProcesses: TestTwoProcess!
+}

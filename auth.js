@@ -3,7 +3,7 @@ dotenv.config();
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { throwNewGQLError } from './GraphQLError.js';
-import { createUser, getUserByLogin } from './models/user.js';
+import { createUser, getUserByLogin } from './models/User/user.js';
 
 const secret = process.env.SECRET;
 
