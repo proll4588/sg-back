@@ -53,3 +53,12 @@ export const getUserByLogin = async (login) => {
     select: { password: true, ...USER_DEF },
   });
 };
+
+export const getStudentUsers = async () => {
+  const data = await prisma.user.findMany({
+    where: { Student: { isNot: null }, roleId: 2 },
+    select: USER_DEF,
+  });
+
+  return data;
+};

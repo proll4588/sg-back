@@ -6,7 +6,7 @@ type Group {
 type Student {
   passbookNumber: Int!
   name: String!
-  group: Group!
+  Group: Group!
 }
 
 type Role {

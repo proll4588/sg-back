@@ -18,6 +18,7 @@ type Query {
   getUsersRoles: [Role]
   getUsers(roleId: Int): [User]
   getUser: User
+  getStudentUsers: [User]
 
   # Test one #
   getTestOneProcess: [TestOneProcess]
@@ -53,4 +54,8 @@ type Mutation {
   ansTestTwo(processId: Int!, questionId: Int!, ans: Boolean!): TestTwoProcess
   completeTestTwo(processId: Int!): TestTwoProcess
   # ======== #
+
+  # Test three #
+  processPdf(userId: Int!, file: String!): Boolean
+  # ========== #
 }

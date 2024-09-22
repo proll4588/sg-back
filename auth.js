@@ -54,7 +54,7 @@ export const login = async (login, password) => {
   if (!validPass) throwNewGQLError('PASSWORD_IS_NOT_CORRECT');
 
   /* Если всё ок, то подписываем токен и отправляем клиенту */
-  const token = signJWT(user.id, user.roleId);
+  const token = signJWT(user.id, user.Role.id);
   return { token };
 };
 

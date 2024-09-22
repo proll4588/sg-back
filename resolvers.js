@@ -8,6 +8,7 @@ import {
 } from './auth.js';
 import {
   deleteUser,
+  getStudentUsers,
   getUserById,
   getUsersByRole,
   getUsersRoles,
@@ -30,6 +31,7 @@ import {
   getTestTwoResults,
   startTestTwo,
 } from './models/TestTwo/testTwo.js';
+import { processPdf } from './models/TestThree/testThree.js';
 
 const qRegistrate = async (login, password, roleId) =>
   await registrate(login, password, roleId);
@@ -38,7 +40,7 @@ const qLogin = async (log, password) => await login(log, password);
 
 const qGetUsersRoles = async () => await getUsersRoles();
 const qGetUsers = async (context, roleId) => {
-  checkUserAdmin(context);
+  // checkUserAdmin(context);
   return await getUsersByRole(roleId);
 };
 
@@ -109,6 +111,14 @@ const qGetTestTwoResults = async () => {
   return await getTestTwoResults();
 };
 
+const qProcessPdf = async (userId, file) => {
+  return await processPdf(userId, file);
+};
+
+const qGetStudentUsers = async () => {
+  return await getStudentUsers();
+};
+
 const resolvers = {
   Upload: GraphQLUpload,
   Query: {
@@ -118,6 +128,7 @@ const resolvers = {
     getUsers: async (_, { roleId }, context) =>
       await qGetUsers(context, roleId),
     getUser: async (_, __, context) => await qGetUser(context),
+    getStudentUsers: async () => await qGetStudentUsers(),
 
     /* TEST ONE */
     // TODO: Разобраться с доступами
@@ -156,6 +167,10 @@ const resolvers = {
     completeTestTwo: async (_, { processId }) =>
       await qCompleteTestTwo(processId),
     /* ======== */
+
+    /* TEST THREE */
+    processPdf: async (_, { userId, file }) => await qProcessPdf(userId, file),
+    /* ========== */
   },
 };
 

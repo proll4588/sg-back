@@ -14,6 +14,7 @@ model User {
   roleId           Int
   passbookNumber   Int?               @unique(map: "User_pk")
   TestOneProcesses TestOneProcesses[]
+  TestThreeProcess TestThreeProcess[]
   TestTwoProcesses TestTwoProcesses[]
   Role             Role               @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_Role_id_fk")
   Student          Student?           @relation(fields: [passbookNumber], references: [passbookNumber], onDelete: NoAction, onUpdate: NoAction, map: "User_Student_passbookNumber_fk")
@@ -153,4 +154,32 @@ model TestTwoResult {
   TestTwoProcesses TestTwoProcesses @relation(fields: [processId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestTwoResult_TestTwoProcesses_id_fk")
 
   @@index([processId], map: "TestTwoResult_TestTwoProcesses_id_fk")
+}
+
+model TestThreeProcess {
+  id              Int               @id @default(autoincrement())
+  userId          Int
+  date            DateTime          @db.DateTime(0)
+  User            User              @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestThreeProcess_User_id_fk")
+  TestThreeResult TestThreeResult[]
+
+  @@index([userId], map: "TestThreeProcess_User_id_fk")
+}
+
+model TestThreeResult {
+  id                   Int                  @id @default(autoincrement())
+  resultTitleId        Int
+  result               Int
+  processId            Int
+  TestThreeProcess     TestThreeProcess     @relation(fields: [processId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestThreeResult_TestThreeProcess_id_fk")
+  TestThreeResultTitle TestThreeResultTitle @relation(fields: [resultTitleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TestThreeResult_TestThreeResultTitle_id_fk")
+
+  @@index([resultTitleId], map: "TestThreeResult_TestThreeResultTitle_id_fk")
+  @@index([processId], map: "TestThreeResult_TestThreeProcess_id_fk")
+}
+
+model TestThreeResultTitle {
+  id              Int               @id @default(autoincrement())
+  title           String            @db.VarChar(255)
+  TestThreeResult TestThreeResult[]
 }

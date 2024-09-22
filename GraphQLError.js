@@ -2,18 +2,18 @@ import { GraphQLError } from 'graphql';
 
 export const throwNewGQLError = (code) => {
   switch (code) {
-    case 'GOOD_ALREADY_EXIST':
-      throw new GraphQLError('Good is already exist', {
+    case 'RESULTS_IS_ALREADY_EXIST':
+      throw new GraphQLError('Results already exist', {
         extensions: {
-          code: 'GOOD_ALREADY_EXIST',
+          code: 'RESULTS_IS_ALREADY_EXIST',
           http: { status: 400 },
         },
       });
 
-    case 'GOOD_NOT_FOUND':
-      throw new GraphQLError('Good is not found', {
+    case 'WRONG_PDF_FILE':
+      throw new GraphQLError('Wrong pdf file', {
         extensions: {
-          code: 'GOOD_NOT_FOUND',
+          code: 'WRONG_PDF_FILE',
           http: { status: 400 },
         },
       });

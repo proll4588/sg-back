@@ -6,9 +6,7 @@ export const GROUP_DEF = {
 export const STUDENT_DEF = {
   passbookNumber: true,
   name: true,
-  Group: {
-    select: GROUP_DEF,
-  },
+  Group: { select: GROUP_DEF },
 };
 
 export const ROLE_DEF = {
