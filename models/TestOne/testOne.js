@@ -15,23 +15,21 @@ export const addAns = async (processId, questionId, ans) => {
   });
 
   if (candidate) {
-    candidate = await prisma.testOneAnswer.update({
+    await prisma.testOneAnswer.update({
       where: { id: candidate.id },
       data: { answer: ans },
-      select: TEST_ONE_PROCESSES_DEF,
     });
   } else {
-    candidate = await prisma.testOneAnswer.create({
+    await prisma.testOneAnswer.create({
       data: {
         answer: ans,
         questionId: questionId,
         processId: processId,
       },
-      select: TEST_ONE_PROCESSES_DEF,
     });
   }
 
-  return candidate;
+  return getTestOneByProcessId(processId);
 };
 
 export const getTestOneByUserId = async (userId) => {
