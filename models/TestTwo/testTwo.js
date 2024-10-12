@@ -44,19 +44,19 @@ export const answerTestTwo = async (processId, questionId, answer) => {
 
   let ans;
   if (candidate) {
-    ans = await prisma.testTwoAnswer.update({
+    await prisma.testTwoAnswer.update({
       where: { id: candidate.id },
       data: { answer },
       select: TEST_TWO_ANSWER_DEF,
     });
   } else {
-    ans = await prisma.testTwoAnswer.create({
+    await prisma.testTwoAnswer.create({
       data: { processId, questionId, answer },
       select: TEST_TWO_ANSWER_DEF,
     });
   }
 
-  return ans;
+  return getTestTwoProcessById(processId);
 };
 
 export const completeTestTwo = async (processId) => {
